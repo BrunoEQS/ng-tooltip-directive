@@ -61,7 +61,7 @@ export class TooltipDirective implements OnDestroy {
     y: number
   ) {
     const popup = document.createElement('div');
-    popup.setAttribute('class', 'tooltip');
+    popup.setAttribute('class', 'tooltip show');
     popup.textContent = this.tooltip;
     popup.style.backgroundColor = this.tooltipBgColor;
     popup.style.color = this.tooltipTextColor;
@@ -69,7 +69,7 @@ export class TooltipDirective implements OnDestroy {
     popup.style.top = `${y.toString()}px`;
     containerElement.appendChild(popup);
     this.myPopup = popup;
-    document.querySelector('.tooltip').classList.add('show');
+    /* document.querySelector('.tooltip').classList.add('show'); */
     this.removeTooltip(this.myPopup);
   }
 

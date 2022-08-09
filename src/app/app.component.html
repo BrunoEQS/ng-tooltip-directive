@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="tooltip-container">
+    <h1
+      class="title"
+      [tooltip]="'Title'"
+      [tooltipBgColor]="'navy'"
+      [tooltipTextColor]="'yellow'"
+    >
+      Tooltip Demo
+    </h1>
+  </div>
+  <div class="tooltip-container">
+    <p class="text" [tooltip]="'A paragraph'" [tooltipBgColor]="'coral'">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi aperiam
+      commodi porro veniam laboriosam cum aliquid saepe inventore, cupiditate
+      adipisci aliquam architecto doloribus quis exercitationem dignissimos odit
+      placeat nihil recusandae autem eos officia molestias soluta. Maxime facere
+      distinctio enim quibusdam.
+    </p>
+  </div>
+  <div class="tooltip-container">
+    <button
+      class="cta-btn"
+      [tooltip]="'A fancy button'"
+      [tooltipBgColor]="'lightseagreen'"
+    >
+      Read More
+    </button>
+  </div>
+  <div class="tooltip-container">
+    <a
+      href="#"
+      class="link"
+      [tooltip]="'A plain link'"
+      [tooltipBgColor]="'cornflowerblue'"
+      >Follow URL</a
+    >
+  </div>
+</div>

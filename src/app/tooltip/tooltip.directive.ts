@@ -49,7 +49,12 @@ export class TooltipDirective implements OnDestroy {
     this.createTooltipPopup(parentEl, x, y);
   }
 
-  /* Create the tooltip element */
+  /**
+   * Create the tooltip element
+   * @param containerElement - the element the tooltip will be appended to
+   * @param x - the total width of the hovered element
+   * @param y - the total height of the hovered element
+   */
   private createTooltipPopup(
     containerElement: HTMLElement,
     x: number,
@@ -76,7 +81,10 @@ export class TooltipDirective implements OnDestroy {
     }
   }
 
-  /* Hide the tooltip after some given time */
+  /**
+   * Hide the tooltip after some given time
+   * @param tooltip - the previously created tooltip element
+   */
   private removeTooltip(tooltip: HTMLDivElement) {
     const removeTooltipDelay = 5000;
     setTimeout(() => {

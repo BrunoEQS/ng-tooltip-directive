@@ -23,7 +23,6 @@ export class TooltipDirective implements OnDestroy {
   @Input() tooltipTextColor = '';
 
   private myPopup: HTMLDivElement;
-  private timer: number;
 
   constructor(private el: ElementRef) {}
 
@@ -75,7 +74,6 @@ export class TooltipDirective implements OnDestroy {
 
   /* Listen for the mouse leave event to hide the tooltip */
   @HostListener('mouseleave') onMouseLeave() {
-    if (this.timer) clearTimeout(this.timer);
     if (this.myPopup) {
       this.myPopup.remove();
     }

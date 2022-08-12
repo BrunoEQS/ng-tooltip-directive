@@ -22,6 +22,8 @@ export class TooltipDirective implements OnDestroy {
   /* The color of the tooltip text */
   @Input() tooltipTextColor = '';
 
+  @Input() removeTooltipDelay = 1000;
+
   private myPopup: HTMLDivElement;
 
   constructor(private el: ElementRef) {}
@@ -68,14 +70,12 @@ export class TooltipDirective implements OnDestroy {
     popup.style.top = `${y.toString()}px`;
     containerElement.appendChild(popup);
     this.myPopup = popup;
-    /* document.querySelector('.tooltip').classList.add('show'); */
-    this.removeTooltip(this.myPopup);
   }
 
   /* Listen for the mouse leave event to hide the tooltip */
   @HostListener('mouseleave') onMouseLeave() {
     if (this.myPopup) {
-      this.myPopup.remove();
+      this.removeTooltip(this.myPopup);
     }
   }
 
@@ -84,9 +84,9 @@ export class TooltipDirective implements OnDestroy {
    * @param tooltip - the previously created tooltip element
    */
   private removeTooltip(tooltip: HTMLDivElement) {
-    const removeTooltipDelay = 5000;
+    this.removeTooltipDelay = 5000;
     setTimeout(() => {
       if (tooltip) tooltip.remove();
-    }, removeTooltipDelay);
+    }, this.removeTooltipDelay);
   }
 }

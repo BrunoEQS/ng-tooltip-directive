@@ -13,8 +13,8 @@ export class TooltipDirective implements OnDestroy {
   /* The text of the tooltip */
   @Input() tooltip = '';
 
-  /* The amount of time (in ms) after which the tooltip is shown - TBD */
-  @Input() tooltipDelay? = 190;
+  /* The amount of time (in ms) after which the tooltip is shown */
+  @Input() tooltipDelay? = 100;
 
   /* The background color of the tooltip */
   @Input() tooltipBgColor? = '';
@@ -47,7 +47,9 @@ export class TooltipDirective implements OnDestroy {
       this.el.nativeElement.getBoundingClientRect().top +
       this.el.nativeElement.offsetHeight +
       3;
-    this.createTooltipPopup(parentEl, x, y);
+    setTimeout(() => {
+      this.createTooltipPopup(parentEl, x, y);
+    }, this.tooltipDelay);
   }
 
   /**
@@ -84,7 +86,6 @@ export class TooltipDirective implements OnDestroy {
    * @param tooltip - the previously created tooltip element
    */
   private removeTooltip(tooltip: HTMLDivElement) {
-    this.removeTooltipDelay = 5000;
     setTimeout(() => {
       if (tooltip) tooltip.remove();
     }, this.removeTooltipDelay);

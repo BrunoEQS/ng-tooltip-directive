@@ -14,15 +14,19 @@ export class TooltipDirective implements OnDestroy {
   @Input() tooltip = '';
 
   /* The amount of time (in ms) after which the tooltip is shown */
-  @Input() tooltipDelay? = 100;
+  @Input() showTooltipDelay? = 100;
 
   /* The background color of the tooltip */
   @Input() tooltipBgColor? = '';
 
   /* The color of the tooltip text */
-  @Input() tooltipTextColor = '';
+  @Input() tooltipTextColor? = '';
 
-  @Input() removeTooltipDelay = 1000;
+  @Input() removeTooltipDelay? = 1000;
+
+  createTooltipTimeout: number;
+
+  removeTooltipTimeout: number;
 
   private myPopup: HTMLDivElement;
 
@@ -35,21 +39,36 @@ export class TooltipDirective implements OnDestroy {
     }
   }
 
+  /* Cancel the previously set timeouts */
+  cancelTimeout(timeout: number) {
+    clearTimeout(timeout);
+  }
+
+  /* Read element size and then create the tooltip */
+  getElementSize() {}
+
   /* Listen for the mouse enter event to show the tooltip */
   @HostListener('mouseenter', ['$event']) onMouseEnter(event: Event) {
     const currentElement = event.target as Element;
     const parentEl = currentElement.parentElement;
+    const hostElement: HTMLElement = this.el.nativeElement;
     let x =
-      this.el.nativeElement.getBoundingClientRect().left +
-      this.el.nativeElement.offsetWidth / 2 -
-      this.el.nativeElement.offsetWidth / 2;
+      hostElement.getBoundingClientRect().left +
+      hostElement.offsetWidth / 2 -
+      hostElement.offsetWidth / 2;
     let y =
-      this.el.nativeElement.getBoundingClientRect().top +
-      this.el.nativeElement.offsetHeight +
-      3;
-    setTimeout(() => {
+      hostElement.getBoundingClientRect().top + hostElement.offsetHeight + 3;
+    this.createTooltipTimeout = setTimeout(() => {
       this.createTooltipPopup(parentEl, x, y);
-    }, this.tooltipDelay);
+    }, this.showTooltipDelay);
+  }
+
+  /* Listen for the mouse leave event to hide the tooltip */
+  @HostListener('mouseleave') onMouseLeave() {
+    if (this.myPopup) {
+      this.removeTooltip(this.myPopup);
+    }
+    this.cancelTimeout(this.createTooltipTimeout);
   }
 
   /**
@@ -74,19 +93,12 @@ export class TooltipDirective implements OnDestroy {
     this.myPopup = popup;
   }
 
-  /* Listen for the mouse leave event to hide the tooltip */
-  @HostListener('mouseleave') onMouseLeave() {
-    if (this.myPopup) {
-      this.removeTooltip(this.myPopup);
-    }
-  }
-
   /**
    * Hide the tooltip after some given time
    * @param tooltip - the previously created tooltip element
    */
   private removeTooltip(tooltip: HTMLDivElement) {
-    setTimeout(() => {
+    this.removeTooltipTimeout = setTimeout(() => {
       if (tooltip) tooltip.remove();
     }, this.removeTooltipDelay);
   }

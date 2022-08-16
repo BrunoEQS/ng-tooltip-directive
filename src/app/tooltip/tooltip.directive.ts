@@ -45,19 +45,26 @@ export class TooltipDirective implements OnDestroy {
   }
 
   /* Read element size and then create the tooltip */
-  getElementSize() {}
+  getElementSize(el: HTMLElement) {
+    let xPos = 0;
+    let yPos = 0;
+    while (el) {
+      xPos += el.offsetLeft + el.scrollLeft / 2;
+      yPos += el.offsetTop + el.scrollTop + 10;
+      el = el.offsetParent as HTMLElement;
+    }
+    return { x: xPos, y: yPos };
+  }
 
   /* Listen for the mouse enter event to show the tooltip */
   @HostListener('mouseenter', ['$event']) onMouseEnter(event: Event) {
     const currentElement = event.target as Element;
     const parentEl = currentElement.parentElement;
     const hostElement: HTMLElement = this.el.nativeElement;
-    let x =
-      hostElement.getBoundingClientRect().left +
-      hostElement.offsetWidth / 2 -
-      hostElement.offsetWidth / 2;
-    let y =
-      hostElement.getBoundingClientRect().top + hostElement.offsetHeight + 3;
+    /* const { x, y } = this.getElementSize(hostElement); */
+    const { width, height, top, left } = hostElement.getBoundingClientRect();
+    let x = left + (width / 2 - width / 2);
+    let y = top + (height + 3);
     this.createTooltipTimeout = setTimeout(() => {
       this.createTooltipPopup(parentEl, x, y);
     }, this.showTooltipDelay);
